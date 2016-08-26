@@ -1,61 +1,54 @@
+from tkinter import *
 import tkinter as tk
 
-LARGE_FONT = ("Verdana", 12)
-
-class newclass(tk.Tk):
-
-	def __init__(self, *args, **kwargs):
-		tk.Tk.__init__(self, *args, **kwargs)
-		main_page = tk.Frame(self)
-		main_page.pack(side="top", fill="both", expand = True)
-
-		main_page.grid_rowconfigure(0, weight=1)
-		main_page.grid_columnconfigure(0, weight=1)
-
-		self.frames = {}
-		for F in (StartPage, PageOne):
-
-		    frame = StartPage(main_page, self)
-		    self.frames[F] = frame
-		    frame.grid(row=0, column=0, sticky="nsew")
 
 
-		self.show_frame(StartPage)
-
-	def show_frame(self, cont):
-		frame = self.frames[cont]
-		frame.tkraise()
+class Start_Window (Frame):
 
 
-def fag():
-	print("poo")
+	def __init__(self, master=None):
+		Frame.__init__(self, master)
+		self.master = master
+		self.init_window()
+# main window logic
+	def init_window(self):
+		self.master.title("GUI")
+		self.pack(fill=BOTH, expand=1)
+		quitButton = Button(self, text="Quit", command=self.client_exit)
+		quitButton.place(x=199, y=450)
 
-class StartPage(tk.Frame):
-	def __init__(self, parent, controller):
-	    tk.Frame.__init__(self, parent)
-	    label = tk.Label(self, text="StartPage", font=LARGE_FONT)
-	    label.pack(pady=10, padx=10)
+		testButton = Button(self, text = "Test", command=self.new_window)
+		testButton.place(x=50, y = 50)
+# menu & buttons
+		menu = Menu(self.master)
+		self.master.config(menu=menu)
+		file = Menu(menu)
+		file.add_command(label='Help', command=self.client_exit)
+		file.add_command(label='Exit', command=self.client_exit)
+		menu.add_cascade(label='File', menu=file)
 
-	    button1 = tk.Button(self, text="Visit Page 1", 
-	    	command=lambda: controller.show_frame(PageOne))
-	    button1.pack()
+# when sum option is chosen
+	def new_window(self):
+		
+		window = tk.Toplevel(self)
+		self.e = StringVar()
+		self.n = Entry(self.master, textvariable=self.e)
+		self.n.pack(padx=40, pady=200)
 
-class PageOne (tk.Frame):
+		self.submit = Button(self, text="Submit", command=self.client_exit)
+		self.submit.pack(padx=100, pady=200)
 
-	def __init__(self, parent, controller):
-		tk.Frame.__init__(self, parent)
-		label = tk.Label(self, text="New", font=LARGE_FONT)
-		label.pack(pady=10,padx=10)
+#exit method
+	def client_exit(self):
+		exit()
 
-		button2 = tk.Button(self, text="New buttooooooooo", 
-			command=lambda: controller.show_frame(StartPage))
-		button2.pack()
+class Second_Window(Frame):
+		def __init__(self, master=None):
+		    Frame.__init__(self, master)
+		    self.master = master
+		    self.init_window()
 
 
 
 
 
-
-
-app = newclass()
-app.mainloop()
